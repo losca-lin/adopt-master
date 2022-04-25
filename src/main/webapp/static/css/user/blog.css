@@ -1,0 +1,133 @@
+/*-- blog --*/
+
+.blog {
+  background: url(../../images/login/bg3.jpg) no-repeat center fixed;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  -ms-background-size: cover;
+  position: relative;
+  margin-top: 60px;
+}
+
+.blog h3.agile-title {
+  color: #fff;
+}
+
+.blog-grids.mid-blog-agile {
+  position: absolute;
+  bottom: -1.5%;
+  right: 0;
+}
+
+.mid-blog-agile h5 {
+  color: #ffdd57;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 30px;
+  padding: 3.83em 0;
+  text-align: center;
+  width: 96%;
+  margin: 27px 10px;
+  border: 7px double #0dc5dd;
+  background: rgba(0, 0, 0, 0.14);
+}
+
+.blog-full-wthree {
+  background: rgba(12, 12, 12, 0.37);
+}
+
+.blog-left-agileits {
+  float: left;
+  padding: 15px;
+  width: 20%;
+  text-align: center;
+  background: #00cdc1;
+}
+
+.blog-right-agileits-w3layouts h4 a {
+  color: #fff;
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-transform: capitalize;
+  text-decoration: none;
+}
+
+.blog-right-agileits-w3layouts h4 a:hover {
+  opacity: 0.7;
+}
+
+.blog-right-agileits-w3layouts {
+  float: right;
+  width: 80%;
+  padding: 20px;
+  text-align: center;
+}
+
+.blog-left-agileits p {
+  color: #fff;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+}
+
+.blog-left-agileits span {
+  color: #fff;
+  font-size: 23px;
+  text-align: center;
+}
+
+.blog-right-agileits-w3layouts p a {
+  color: #ff3535;
+  letter-spacing: 1px;
+  font-size: 18px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 14px;
+  display: inline-block;
+}
+
+.blog-right-agileits-w3layouts p a:hover {
+  color: #fff;
+}
+
+.blog-grids .blog-full-wthree:nth-child(2) {
+  margin: 1em 0;
+}
+
+/*--modal--*/
+
+.modal-content img {
+  width: 100%;
+}
+
+.modal-content h4 {
+  color: #ff3535;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-family: 'Molle', cursive;
+  letter-spacing: 1px;
+}
+
+.modal-content h5 {
+  color: #00cdc1;
+  padding: 15px 0 7px;
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+
+.modal-content p {
+  color: #636363;
+  font-size: 14px;
+  line-height: 25px;
+  padding-top: 10px;
+}
+
+.modal-header {
+  padding: 30px;
+}
+
+/*--//modal--*/
+
+/*-- //blog --*/
