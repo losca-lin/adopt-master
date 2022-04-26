@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -47,5 +48,17 @@ public class ApplyServiceImpl implements ApplyService {
     @Override
     public Integer create(Apply apply) {
         return applyMapper.insert(apply);
+    }
+
+    @Override
+    public PageInfo list(Integer pageNum, Integer pageSize, String value) {
+        PageHelper.startPage(pageNum,pageSize);
+        EntityWrapper wrapper = new EntityWrapper();
+        if (!StringUtils.isEmpty(value) && !("2".equals(value))){
+            wrapper.like("state",value);
+        }
+        List list = applyMapper.selectList(wrapper);
+        PageInfo<Apply> pageInfo = new PageInfo<>(list);
+        return pageInfo;
     }
 }

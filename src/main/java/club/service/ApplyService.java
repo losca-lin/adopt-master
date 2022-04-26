@@ -9,4 +9,6 @@ public interface ApplyService {
     int updateApply(Apply apply);
     int del(Integer id);
     Integer create(Apply apply);
+
+    PageInfo list(Integer pageNum, Integer pageSize, String value);
 }

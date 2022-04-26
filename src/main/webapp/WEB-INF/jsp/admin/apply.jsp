@@ -105,617 +105,281 @@ contentType="text/html;charset=UTF-8" language="java" %>
         <!-- 左侧显示列表部分 start-->
         <jsp:include page="/admin/nav" />
       </nav>
-      <!-- 领养表列表查询部分  start-->
-      <div id="page-wrapper">
-        <div class="row">
-          <div class="col-lg-12">
-            <h1 class="page-header">申请成为志愿者</h1>
-          </div>
-          <!-- /.col-lg-12 -->
+      <div id="app" style="margin-left: 250px;margin-top: 20px;">
+        <div class="wy-filter">
+          <el-select v-model="query.value" placeholder="请选择">
+            <el-option
+                    v-for="(name,index) in options2"
+                    :key="index"
+                    :label="name[index]"
+                    :value="index">
+            </el-option>
+
+          </el-select>
+          <el-button type="success" size="small" plain icon="el-icon-search" @click="find" style="height: 40px">查询</el-button>
+          <el-button style="float:right" type="primary" size="small" plain icon="el-icon-plus" @click="add"
+                     style="float: right"></el-button>
         </div>
-        <!-- /.row -->
-        <div class="panel panel-default">
-          <!-- 搜索部分 -->
-          <div class="panel-body">
-            <form class="form-inline" method="get" action="">
-              <div class="form-group">
-                <label for="findByState">申请是否被处理</label>
-                <select class="form-control" id="findByState" name="state">
-                  <option value="">所有</option>
-                  <option value="2">申请没有被处理</option>
-                  <option value="3">申请已经被处理</option>
-                </select>
-              </div>
-              <button type="button" class="btn btn-primary" id="find_modal_btn">
-                查询
-              </button>
-            </form>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="panel panel-default">
-              <div class="panel-heading">领养信息列表</div>
-              <!-- /.panel-heading -->
-              <table
-                class="table table-bordered table-striped"
-                id="apply_table"
+        <el-table
+                :data="tableData.list"
+                style="width: 100%"
+                :row-class-name="tableRowClassName"
+        >
+          <el-table-column
+                  prop="id"
+                  label="编号"
+                  width="180">
+          </el-table-column>
+
+          <el-table-column
+                  prop="name"
+                  label="姓名"
+                  width="180">
+          </el-table-column>
+
+          <el-table-column
+                  prop="email"
+                  label="邮箱"
+                  width="180">
+          </el-table-column>
+
+          <el-table-column
+                  prop="age"
+                  label="年龄"
+                  width="180">
+          </el-table-column>
+
+          <el-table-column label="电话" prop="telephone"> </el-table-column>
+          <el-table-column label="信息" prop="message"> </el-table-column>
+          <el-table-column label="申请时间" prop="applyTime"> </el-table-column>
+          <el-table-column label="状态">
+            <template slot-scope="scope">
+              <span v-if="scope.row.state == 1">已处理</span>
+              <span v-else>未处理</span>
+            </template>
+
+          </el-table-column>
+
+          <el-table-column label="操作" width="300" align="center">
+            <template slot-scope="scope">
+
+              <el-button
+                      type="text"
+                      @click="handleAnswer(scope.$index, scope.row)"
+                      icon="el-icon-message"
+              >回复
+              </el-button>
+
+
+              <el-button
+                      type="text"
+                      @click="handleDel(scope.$index, scope.row)"
+                      icon="el-icon-delete"
+              >删除
+              </el-button>
+
+              <el-button
+                      type="text"
+                      @click="handleUpdate(scope.$index, scope.row)"
+                      icon="el-icon-edit"
+              >修改
+              </el-button>
+
+
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+                style="margin-top: 10px;"
+                background
+                :current-page.sync="query.pageNum"
+                :page-count="tableData.pages"
+                layout="prev,pager,next"
+                @current-change="getAll"></el-pagination>
+
+        <!-- 编辑弹出框 -->
+        <el-dialog title="详情" :visible.sync="editVisible" width="30%">
+          <el-form ref="form" :model="form" label-width="70px">
+            <el-form-item label="姓名">
+              <el-input
+                      v-model="form.name"
+                      disabled
               >
-                <thead>
-                  <tr>
-                    <%--复选框，因为没有做相关功能，就弃用了--%> <%--
-                    <th>
-                      <input type="checkbox" id="check_all" />
-                    </th>
-                    --%>
-                    <th>编号</th>
-                    <th>用户名称</th>
-                    <th>Email</th>
-                    <th>年龄</th>
-                    <th>电话</th>
-                    <th>申请理由</th>
-                    <th>申请时间</th>
-                    <th>状态</th>
-                    <th>操作</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
-              <div class="row">
-                <!--分页文字信息  -->
-                <div class="col-md-8" id="page_info_area"></div>
-                <!-- 分页条信息 -->
-                <div class="col-md-4" id="page_nav_area"></div>
-              </div>
-              <!-- /.panel-body -->
-            </div>
-            <!-- /.panel -->
-          </div>
-          <!-- /.col-lg-12 -->
-        </div>
-      </div>
-      <!-- 用户查询  end-->
-    </div>
-    <!-- 修改申请静态框 -->
-    <div
-      class="modal fade"
-      id="editApply"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="myModalLabe"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-            <h4 class="modal-title" id="myModalLabe">修改申请信息</h4>
-          </div>
-          <div class="modal-body">
-            <form
-              class="form-horizontal"
-              id="edit_apply_form"
-              method="post"
-              enctype="multipart/form-data"
-            >
-              <input type="hidden" id="edit_id" name="id" />
-              <div class="form-group">
-                <label for="edit_name" class="col-sm-2 control-label">
-                  申请人
-                </label>
-                <div class="col-sm-4">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="edit_name"
-                    placeholder="用户名称"
-                    value="${apply.name}"
-                    name="name"
-                  />
-                </div>
-                <label for="edit_email" class="col-sm-2 control-label">
-                  邮件
-                </label>
-                <div class="col-sm-4">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="edit_email"
-                    placeholder="邮件"
-                    value="${apply.email}"
-                    name="email"
-                  />
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="edit_time" class="col-sm-2 control-label">
-                  申请时间
-                </label>
-                <div class="col-sm-4">
-                  <input
-                    type="date"
-                    class="form-control"
-                    id="edit_time"
-                    placeholder="时间"
-                    value="${apply.applyTime}"
-                    name="applyTime"
-                  />
-                </div>
-                <label for="edit_telephone" class="col-sm-2 control-label">
-                  电话号码
-                </label>
-                <div class="col-sm-4">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="edit_telephone"
-                    placeholder="电话"
-                    value="${apply.telephone}"
-                    name="telephone"
-                  />
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="edit_age" class="col-sm-2 control-label">
-                  年龄
-                </label>
-                <div class="col-sm-4">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="edit_age"
-                    placeholder="年龄"
-                    value="${apply.age}"
-                    name="age"
-                  />
-                </div>
-                <label for="edit_message" class="col-sm-2 control-label">
-                  申请理由
-                </label>
-                <div class="col-sm-4">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="edit_message"
-                    placeholder="申请理由"
-                    value="${apply.message}"
-                    name="message"
-                  />
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="edit_state" class="col-sm-2 control-label">
-                  是否被处理
-                </label>
-                <div class="col-sm-4">
-                  <select
-                    class="form-control"
-                    id="edit_state"
-                    value="${apply.state}"
-                    name="state"
-                  >
-                    <option value="2">还没有被被处理</option>
-                    <option value="3">已经被处理</option>
-                  </select>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-default"
-              data-dismiss="modal"
-              id="apply_updateDown_btn"
-            >
-              关闭
-            </button>
-            <button type="button" class="btn btn-primary" id="apply_update_btn">
-              保存修改
-            </button>
-          </div>
-        </div>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" disabled>
+              <el-input v-model="form.email" disabled=""></el-input>
+            </el-form-item>
+            <el-form-item label="信息">
+              <el-input type="textarea" v-model="form.message"></el-input>
+            </el-form-item>
+            <el-form-item label="状态">
+              <template slot-scope="scope">
+                <el-select v-model="form.state" placeholder="请选择">
+                  <el-option
+                          v-for="(name,index) in options"
+                          :key="index"
+                          :label="name[index]"
+                          :value="index">
+                  </el-option>
+
+                </el-select>
+              </template>
+            </el-form-item>
+
+
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+                <el-button @click="editVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveEdit">确 定</el-button>
+            </span>
+        </el-dialog>
+
+        <!-- 编辑回复 -->
+        <el-dialog title="回复" :visible.sync="replyVisible" width="30%">
+          <el-form :model="replyForm" label-width="70px">
+            <el-form-item label="姓名">
+              <el-input
+                      v-model="replyForm.name"
+                      disabled
+              >
+              </el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" disabled>
+              <el-input v-model="replyForm.email" disabled=""></el-input>
+            </el-form-item>
+            <el-form-item label="回复内容">
+              <el-input type="textarea" v-model="replyForm.content"></el-input>
+            </el-form-item>
+
+
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+                <el-button @click="replyVisible = false">取 消</el-button>
+                <el-button type="primary" @click="replyEdit">确 定</el-button>
+            </span>
+        </el-dialog>
       </div>
     </div>
-    <%--登录失效，跳转至登录--%>
-    <div
-      class="modal fade"
-      id="notlogin"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="myModalLabe"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-            <h4 class="modal-title">登录失效</h4>
-          </div>
-          <div class="modal-body">
-            <p>请先 <a href="/admin/login">登录</a>！</p>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-default"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              关闭
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- 引入js文件 -->
-    <!-- jQuery -->
-    <!-- jQuery -->
-    <script src="${path}/static/js/jquery-3.4.1.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="${path}/static/bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- 编写js代码 -->
-    <script type="text/javascript">
-      //总的数据 当前的页面  页面容量  当前页码
-      var totalRecord, currentPage, currentSize, currentPageSize;
-      var currentAdminId = $("#currentAdminId").val();
 
-      $(function () {
-        to_page(1);
-      });
-      function to_page(pn) {
-        $.ajax({
-          url: "${path}/apply/applys",
-          data: "pn=" + pn,
-          type: "GET",
-          success: function (result) {
-            resolving(result);
-          },
-        });
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="${path}/static/js/vue.js"></script>
+    <!-- import Vue before Element -->
+    <script src="${path}/static/element/lib-index.js"></script>
+    <script src="${path}/static/js/axios.min.js"></script>
+    <style>
+      @import url("//unpkg.com/element-ui@2.15.6/lib/theme-chalk/index.css");
+
+      .wy-filter {
+        margin: 20px;
       }
 
-      function resolving(result) {
-        //1、解析并显示员工数据
-        build_adopts_table(result);
-        //2、解析并显示分页信息
-        build_page_info(result);
-        //3、解析显示分页条数据
-        build_page_nav(result);
-      }
-      function build_adopts_table(result) {
-        //清空table表格
-        $("#apply_table tbody").empty();
-        //index：下标 user：单个对象
-        var applys = result.extend.pageInfo.list;
-        $.each(applys, function (index, apply) {
-          /*var checkBoxTd = $("<td><input type='checkbox' class='check_item'/></td>");*/
-          var applyIdTd = $("<td></td>").append(apply.id);
-          var nameTd = $("<td></td>").append(apply.name);
-          var emailTd = $("<td></td>").append(apply.email);
-          var ageTd = $("<td></td>").append(apply.age);
-          var telephoneTd = $("<td></td>").append(apply.telephone);
-          var messageTd = $("<td></td>").append(apply.message);
-          var applyTimeTd = $("<td></td>").append(apply.applyTime);
-          var stateTd = null;
-          if (apply.state == 2) {
-            stateTd = $("<td></td>").append("没有被处理");
-          } else {
-            stateTd = $("<td></td>").append("已经被处理");
-          }
-          var editBtn = $("<button></button>")
-            .addClass("btn btn-primary btn-sm edit_btn")
-            .append($("<span></span>").addClass("glyphicon glyphicon-pencil"))
-            .append("修改");
-          //为编辑按钮添加一个自定义的属性，来表示当前员工id
-          editBtn.attr("edit-id", apply.id);
-          var delBtn = $("<button></button>")
-            .addClass("btn btn-danger btn-sm delete_btn")
-            .append($("<span></span>").addClass("glyphicon glyphicon-trash"))
-            .append("删除");
-          //为删除按钮添加一个自定义的属性来表示当前删除的员工id
-          delBtn.attr("del-id", apply.id);
-          var btnTd = $("<td></td>").append(editBtn).append(" ").append(delBtn);
-          //var delBtn =
-          //append方法执行完成以后还是返回原来的元素
-          $("<tr></tr>") /*.append(checkBoxTd)*/
-            .append(applyIdTd)
-            .append(nameTd)
-            .append(emailTd)
-            .append(ageTd)
-            .append(telephoneTd)
-            .append(messageTd)
-            .append(applyTimeTd)
-            .append(stateTd)
-            .append(btnTd)
-            .appendTo("#apply_table tbody");
-        });
+      .el-table .warning-row {
+        background: oldlace;
       }
 
-      //解析显示分页信息
-      function build_page_info(result) {
-        $("#page_info_area").empty();
-        $("#page_info_area").append(
-          "当前" +
-            result.extend.pageInfo.pageNum +
-            "页,总" +
-            result.extend.pageInfo.pages +
-            "页,总" +
-            result.extend.pageInfo.total +
-            "条记录"
-        );
-        totalRecord = result.extend.pageInfo.total; //最后的数据
-        currentPage = result.extend.pageInfo.pageNum; //当前页
-        currentSize = result.extend.pageInfo.size; //当前页面的尺寸
-        currentPageSize = result.extend.pageInfo.pageSize; //每页的尺寸
-      }
-      //解析显示分页条，点击分页要能去下一页....
-      function build_page_nav(result) {
-        //page_nav_area
-        $("#page_nav_area").empty();
-        var ul = $("<ul></ul>").addClass("pagination");
-
-        //构建元素
-        var firstPageLi = $("<li></li>").append(
-          $("<a></a>").append("首页").attr("href", "#")
-        );
-        var prePageLi = $("<li></li>").append($("<a></a>").append("&laquo;"));
-        if (result.extend.pageInfo.hasPreviousPage == false) {
-          firstPageLi.addClass("disabled");
-          prePageLi.addClass("disabled");
-        } else {
-          //为元素添加点击翻页的事件
-          firstPageLi.click(function () {
-            to_page(1);
-          });
-          prePageLi.click(function () {
-            to_page(result.extend.pageInfo.pageNum - 1);
-          });
-        }
-
-        var nextPageLi = $("<li></li>").append($("<a></a>").append("&raquo;"));
-        var lastPageLi = $("<li></li>").append(
-          $("<a></a>").append("末页").attr("href", "#")
-        );
-        if (result.extend.pageInfo.hasNextPage == false) {
-          nextPageLi.addClass("disabled");
-          lastPageLi.addClass("disabled");
-        } else {
-          nextPageLi.click(function () {
-            to_page(result.extend.pageInfo.pageNum + 1);
-          });
-          lastPageLi.click(function () {
-            to_page(result.extend.pageInfo.pages);
-          });
-        }
-
-        //添加首页和前一页 的提示
-        ul.append(firstPageLi).append(prePageLi);
-        //1,2，3遍历给ul中添加页码提示
-        $.each(result.extend.pageInfo.navigatepageNums, function (index, item) {
-          var numLi = $("<li></li>").append($("<a></a>").append(item));
-          if (result.extend.pageInfo.pageNum == item) {
-            numLi.addClass("active");
-          }
-          numLi.click(function () {
-            to_page(item);
-          });
-          ul.append(numLi);
-        });
-        //添加下一页和末页 的提示
-        ul.append(nextPageLi).append(lastPageLi);
-
-        //把ul加入到nav
-        var navEle = $("<nav></nav>").append(ul);
-        navEle.appendTo("#page_nav_area");
+      .el-table .success-row {
+        background: #f0f9eb;
       }
 
-      //清空表单样式及内容
-      function reset_form(ele) {
-        $(ele)[0].reset();
-        //清空表单样式
-        $(ele).find("*").removeClass("has-error has-success");
-        $(ele).find(".help-block").text("");
+      input[type=file] {
+        display: none;
       }
-      //根本没有新增按钮
-      /*//点击新增按钮弹出模态框。
-    $("#admin_add_modal_btn").click(function(){
-        //清除表单数据（表单完整重置（表单的数据，表单的样式））
-        reset_form("#newAdmin form");
-        //弹出模态框
-        $("#newAdmin").modal({
-            backdrop:"static"
-        });
-    });*/
-
-      //点击编辑按钮弹出模态框。
-      $(document).on("click", ".edit_btn", function () {
-        if (currentAdminId == 0) {
-          $("#notlogin").modal({
-            backdrop: "static",
-          });
-        } else {
-          //1、发送ajax,根据id获取用户信息
-          //清除表单数据（表单完整重置（表单的数据，表单的样式））
-          reset_form("#editApply form");
-          var id = $(this).attr("edit-id");
-          $.ajax({
-            url: "${path}/apply/findById?id=" + id,
-            type: "GET",
-            success: function (result) {
-              //填充用户信息
-              console.log(result);
-              $("#edit_id").val(result.extend.apply.id);
-              $("#edit_name").val(result.extend.apply.name);
-              $("#edit_email").val(result.extend.apply.email);
-              $("#edit_age").val(result.extend.apply.age);
-              $("#edit_telephone").val(result.extend.apply.telephone);
-              $("#edit_message").val(result.extend.apply.message);
-              $("#edit_time").val(result.extend.apply.applyTime);
-              $("#edit_state").val(result.extend.apply.state);
+    </style>
+    <script>
+      new Vue({
+        el: '#app',
+        created() {
+          this.getAll()
+        },
+        data() {
+          return {
+            tableData: [],
+            query: {
+              value: '',
+              pageNum: 1,
+              pageSize: 8
             },
-          });
-          //2、弹出模态框
-          $("#editApply").modal({
-            backdrop: "static",
-          });
-        }
-      });
+            editVisible: false,
+            replyVisible: false,
+            form: {},
+            replyForm: {},
+            file: null,
+            options:[
+              {0:"未处理"},
+              {1:"已处理"},
+            ],
+            options2:[
+              {0:"未处理"},
+              {1:"已处理"},
+              {2:"全部"},
+            ]
 
-      //点击更新按钮弹出模态框。
-      $("#apply_update_btn").click(function () {
-        var name = $("#edit_name").val();
-        var telephone = $("#edit_telephone").val();
-        if (name == "") {
-          alert("姓名不能为空！");
-        } else if (telephone == "") {
-          alert("电话不能为空！");
-        } else {
-          $.ajax({
-            url: "${path}/apply/update",
-            type: "POST",
-            data: $("#edit_apply_form").serialize(),
-            success: function (result) {
-              alert("申请信息更新成功！");
-              $("#apply_updateDown_btn").click();
-              to_page(currentPage);
-            },
-            error: function (result) {
-              alert("管理员信息更新失败！");
-              to_page(currentPage);
-            },
-          });
-        }
-      });
-
-      //单个删除
-      $(document).on("click", ".delete_btn", function () {
-        if (currentAdminId == 0) {
-          $("#notlogin").modal({
-            backdrop: "static",
-          });
-        } else {
-          //1、弹出是否确认删除对话框
-          var name = $(this).parents("tr").find("td:eq(1)").text();
-          var id = $(this).attr("del-id");
-          if (confirm("确认删除【" + name + "】吗？")) {
-            //确认，发送ajax请求删除即可
-            $.ajax({
-              url: "${path}/apply/delete?id=" + id,
-              type: "GET",
-              success: function (result) {
-                if (result.code == 100) {
-                  alert("申请删除成功！");
-                  if (currentSize == 1) {
-                    to_page(currentPage - 1);
-                  } else {
-                    to_page(currentPage);
-                  }
-                } else {
-                  alert("管理员删除失败！");
-                  to_page(currentPage);
-                }
-              },
-            });
           }
-        }
-      });
-      $("#find_modal_btn").click(function () {
-        $("#apply_table tbody").empty();
-        var state = $("#findByState").val();
-        to_findByState(1, state);
-      });
-
-      function to_findByState(pn, state) {
-        $.ajax({
-          url: "${path}/apply/applys",
-          type: "POST",
-          dataType: "json",
-          data: { pn: pn, state: state },
-          async: "true",
-          success: function (result) {
-            build_adopts_table(result);
-            build_page_info(result);
-            build_page_findByState(result, state);
+        },
+        methods: {
+          tableRowClassName({row, rowIndex}) {
+            if (rowIndex === 1) {
+              return 'warning-row';
+            } else if (rowIndex === 3) {
+              return 'success-row';
+            }
+            return '';
           },
-          error: function (result) {
-            alert("查询失败");
+          getAll() {
+            axios.get('${path}/apply/allApply', {
+              params: this.query
+            }).then(res => {
+              console.log(res)
+              if (res.data.code == 200) {
+                this.tableData = res.data.data
+              }
+            })
           },
-        });
-      }
-
-      //解析显示分页条，点击分页要能去下一页....
-      function build_page_findByState(result, state) {
-        //page_nav_area
-        $("#page_nav_area").empty();
-        var ul = $("<ul></ul>").addClass("pagination");
-
-        //构建元素
-        var firstPageLi = $("<li></li>").append(
-          $("<a></a>").append("首页").attr("href", "#")
-        );
-        var prePageLi = $("<li></li>").append($("<a></a>").append("&laquo;"));
-        if (result.extend.pageInfo.hasPreviousPage == false) {
-          firstPageLi.addClass("disabled");
-          prePageLi.addClass("disabled");
-        } else {
-          //为元素添加点击翻页的事件
-          firstPageLi.click(function () {
-            to_findByState(1, state);
-          });
-          prePageLi.click(function () {
-            to_findByState(result.extend.pageInfo.pageNum - 1, state);
-          });
-        }
-
-        var nextPageLi = $("<li></li>").append($("<a></a>").append("&raquo;"));
-        var lastPageLi = $("<li></li>").append(
-          $("<a></a>").append("末页").attr("href", "#")
-        );
-        if (result.extend.pageInfo.hasNextPage == false) {
-          nextPageLi.addClass("disabled");
-          lastPageLi.addClass("disabled");
-        } else {
-          nextPageLi.click(function () {
-            to_findByState(result.extend.pageInfo.pageNum + 1, state);
-          });
-          lastPageLi.click(function () {
-            to_findByState(result.extend.pageInfo.pages, state);
-          });
-        }
-
-        //添加首页和前一页 的提示
-        ul.append(firstPageLi).append(prePageLi);
-        //1,2，3遍历给ul中添加页码提示
-        $.each(result.extend.pageInfo.navigatepageNums, function (index, item) {
-          var numLi = $("<li></li>").append($("<a></a>").append(item));
-          if (result.extend.pageInfo.pageNum == item) {
-            numLi.addClass("active");
+          handleAnswer(index,row){
+            this.replyForm = row
+            this.replyVisible = true
+          },
+          handleDel(index, row) {
+            axios.get("${path}/apply/delete", {
+              params: {id: row.id}
+            }).then(res => {
+              this.$message("删除成功");
+              this.getAll()
+            })
+          },
+          handleUpdate(index, row) {
+            this.form = row
+            this.editVisible = true
+          },
+          saveEdit() {
+            axios.post("${path}/apply/update", this.form).then(res => {
+              this.editVisible = false;
+              this.getAll();
+            })
+          },
+          find() {
+            this.getAll()
+          },
+          replyEdit(){
+            const formData = new FormData();
+            for(const key in this.replyForm){
+              formData.append(key,this.replyForm[key])
+            }
+            axios.post("${path}/reply/reply", formData).then(res => {
+              this.replyVisible = false;
+              this.getAll();
+              this.$message({
+                type:"success",
+                message:"发送成功"
+              })
+            })
           }
-          numLi.click(function () {
-            to_findByState(item, state);
-          });
-          ul.append(numLi);
-        });
-        //添加下一页和末页 的提示
-        ul.append(nextPageLi).append(lastPageLi);
 
-        //把ul加入到nav
-        var navEle = $("<nav></nav>").append(ul);
-        navEle.appendTo("#page_nav_area");
-      }
+        }
+      })
     </script>
+
   </body>
 </html>

@@ -3,11 +3,12 @@ package club.controller;
 import club.pojo.Apply;
 import club.service.ApplyService;
 import club.util.Message;
+import club.vo.ResponseVO;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -18,15 +19,13 @@ public class ApplyController {
     @Resource
     private ApplyService applyService;
 
-    @RequestMapping("/applys")
+
+    @RequestMapping("/allApply")
     @ResponseBody
-    public Message apply(@RequestParam(required = false)Integer state, @RequestParam("pn") Integer pageNum){
-        Integer pageSize = 3;
-        if(pageNum == 0){
-            pageNum = 1;
-        }
-        PageInfo<Apply> apply = applyService.allApply(state,pageNum,pageSize);
-        return Message.success().add("pageInfo",apply);
+    public ResponseVO allMoney(@RequestParam(defaultValue = "1") Integer pageNum
+            , @RequestParam(defaultValue = "8") Integer pageSize
+            , @RequestParam String value){
+        return ResponseVO.success(applyService.list(pageNum,pageSize,value));
     }
 
     @RequestMapping("/findById")
@@ -35,14 +34,10 @@ public class ApplyController {
         Apply byid = applyService.findByid(id);
         return Message.success().add("apply",byid);
     }
-    @RequestMapping("/update")
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
     @ResponseBody
-    public Message update(Apply apply){
-        int i = applyService.updateApply(apply);
-        if(i > 0){
-            return Message.success();
-        }
-            return Message.fail();
+    public ResponseVO update(@RequestBody Apply apply){
+        return ResponseVO.success(applyService.updateApply(apply));
     }
     @RequestMapping("/delete")
     @ResponseBody

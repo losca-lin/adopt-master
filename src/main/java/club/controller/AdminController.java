@@ -311,4 +311,8 @@ public class AdminController {
     public ResponseVO addMoneyById(@RequestBody ZhiChu zhiChu){
         return ResponseVO.success(zhiChuService.insert(zhiChu));
     }
+
+    /**
+     *
+     */
 }
