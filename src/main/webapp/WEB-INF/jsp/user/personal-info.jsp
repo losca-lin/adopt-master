@@ -249,8 +249,17 @@ contentType="text/html;charset=UTF-8" language="java" %>
             processData: false, // 使数据不做处理
             contentType: false, // 不要设置Content-Type请求头
             success: function (result) {
-              alert("头像修改成功");
-              window.location.reload();
+              alert("头像修改成功,请退出重新登陆");
+              $.ajax({
+                url: "${path}/user/logout",
+                type: "GET",
+                success: function (result) {
+                  window.location.href = "${path}/user/index";
+                },
+                error: function (result) {
+                  alert("退出失败");
+                }
+              })
             },
             error: function (result) {
               alert("头像修改失败");

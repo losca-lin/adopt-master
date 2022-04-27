@@ -3,6 +3,7 @@ package club.controller;
 import club.pojo.Pet;
 import club.service.PetService;
 import club.util.Message;
+import club.vo.ResponseVO;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,12 @@ public class PetController {
 
     @Resource
     private PetService petService;
+
+    @RequestMapping("/getTable")
+    @ResponseBody
+    public ResponseVO getTable(){
+        return ResponseVO.success(petService.getTable());
+    }
 
     @RequestMapping("/pets")
     @ResponseBody

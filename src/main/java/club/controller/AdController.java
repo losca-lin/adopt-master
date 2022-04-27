@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -56,5 +57,12 @@ public class AdController {
     @ResponseBody
     public ResponseVO updateAd(Integer id){
         return ResponseVO.success(adService.deleteById(id));
+    }
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public ResponseVO test(HttpServletRequest request){
+        String contextPath = request.getContextPath();
+        return ResponseVO.success();
     }
 }

@@ -78,6 +78,14 @@ public class UserController {
     public String about(){
         return "user/about";
     }
+    @RequestMapping("/cat")
+    public String cat(){
+        return "user/cat";
+    }
+    @RequestMapping("/dog")
+    public String dog(){
+        return "user/dog";
+    }
 
     @RequestMapping("/error")
     public String error(){

@@ -27,11 +27,11 @@ contentType="text/html;charset=UTF-8" language="java" %>
     <!-- Custom CSS -->
     <link href="${path}/static/css/admin/sb-admin-2.css" rel="stylesheet" />
     <!-- Custom Fonts -->
-    <!-- <link
+    <link
       href="${path}/static/css/admin/font-awesome.min.css"
       rel="stylesheet"
       type="text/css"
-    /> -->
+    />
     <link
       href="${path}/static/css/admin/boot-crm.css"
       rel="stylesheet"
@@ -65,57 +65,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
   </head>
   <body>
     <div id="wrapper">
-      <!-- 导航栏部分 -->
-      <nav
-        class="navbar navbar-default navbar-static-top"
-        role="navigation"
-        style="margin-bottom: 0"
-      >
-        <div class="navbar-header">
-          <a class="navbar-brand" href="">流浪猫狗管理系统</a>
-        </div>
-        <!-- 导航栏右侧图标部分 -->
-        <!-- 导航栏右侧图标部分 -->
-        <ul class="nav navbar-top-links navbar-right">
-          <!-- 消息通知 end -->
-          <!-- 用户信息和系统设置 start -->
-          <li class="dropdown">
-            <a
-              class="dropdown-toggle"
-              data-toggle="dropdown"
-              href="/admin/developing"
-            >
-              <i class="fa fa-user fa-fw"></i>
-              <i class="fa fa-caret-down"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-user">
-              <li>
-                <input type="hidden" id="currentAdminId" value="${admin.id}" />
-              </li>
-              <li>
-                <a href="/admin/developing"
-                  ><i class="fa fa-user fa-fw"></i>
-                  管理员：${admin.adminName}</a
-                >
-              </li>
-              <li>
-                <a href="/admin/developing"
-                  ><i class="fa fa-gear fa-fw"></i> 系统设置</a
-                >
-              </li>
-              <li class="divider"></li>
-              <li>
-                <a href="${path}/admin/logout">
-                  <i class="fa fa-sign-out fa-fw"></i>退出登录
-                </a>
-              </li>
-            </ul>
-          </li>
-          <!-- 用户信息和系统设置结束 -->
-        </ul>
-        <!-- 左侧显示列表部分 start-->
         <jsp:include page="/admin/nav" />
-      </nav>
       <!-- pet信息查询部分  start-->
       <div id="page-wrapper">
         <div class="row">

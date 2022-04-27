@@ -49,6 +49,7 @@ public class AdminController {
 
     //execl文件处理
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    @ResponseBody
     public ResponseVO upload(MultipartFile file) throws IOException, ParseException {
         Workbook workbook = null;
         String suffix = FilenameUtils.getExtension(file.getOriginalFilename());

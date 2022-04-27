@@ -1,8 +1,10 @@
 package club.controller;
 
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -13,6 +15,8 @@ import java.util.UUID;
  */
 @Controller
 public class FileLoad {
+    public static String property = System.getProperty("user.dir");
+
     public static String uploadAdminPic(MultipartFile file) {
         String picName = UUID.randomUUID().toString();
         //获取上传文件得元素得名称
@@ -20,7 +24,7 @@ public class FileLoad {
         String substring = fileName.substring(fileName.lastIndexOf("."));
         //上传文件
         try {
-            file.transferTo(new File("C:/Users/Losca/Desktop/other/4.23/adopt-master/src/main/webapp/static/images/admin/" + picName + substring));
+            file.transferTo(new File(property + "/src/main/webapp/static/images/admin/" + picName + substring));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,7 +40,7 @@ public class FileLoad {
         String substring = fileName.substring(fileName.lastIndexOf("."));
         //上传文件
         try {
-            file.transferTo(new File("C:/Users/Losca/Desktop/other/4.23/adopt-master/src/main/webapp/static/images/user/" + picName + substring));
+            file.transferTo(new File(property+"/src/main/webapp/static/images/user/" + picName + substring));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,7 +56,7 @@ public class FileLoad {
         String substring = fileName.substring(fileName.lastIndexOf("."));
         //上传文件
         try {
-            file.transferTo(new File("C:/Users/Losca/Desktop/other/4.23/adopt-master/src/main/webapp/static/images/animal/" + picName + substring));
+            file.transferTo(new File(property+"/src/main/webapp/static/images/animal/" + picName + substring));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,7 +72,7 @@ public class FileLoad {
         String substring = fileName.substring(fileName.lastIndexOf("."));
         //上传文件
         try {
-            file.transferTo(new File("C:/Users/Losca/Desktop/other/4.23/adopt-master/src/main/webapp/static/images/ad/" + picName + substring));
+            file.transferTo(new File(property+"/src/main/webapp/static/images/ad/" + picName + substring));
         } catch (IOException e) {
             e.printStackTrace();
         }

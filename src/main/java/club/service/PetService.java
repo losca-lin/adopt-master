@@ -1,7 +1,12 @@
 package club.service;
 
+import club.pojo.Form;
 import club.pojo.Pet;
 import com.github.pagehelper.PageInfo;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 public interface PetService {
     PageInfo<Pet> pets(Integer pageNum, Integer pagesize);
@@ -11,4 +16,6 @@ public interface PetService {
     int add(Pet pet);
     int update(Pet pet);
     int del(Integer id);
+
+    List<Form> getTable();
 }

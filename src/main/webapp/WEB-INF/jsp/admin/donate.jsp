@@ -50,40 +50,7 @@
 <body>
 <div id="wrapper">
     <!-- 导航栏部分 -->
-    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="">流浪猫狗管理系统</a>
-        </div>
-        <!-- 导航栏右侧图标部分 -->
-        <!-- 导航栏右侧图标部分 -->
-        <ul class="nav navbar-top-links navbar-right">
-            <!-- 消息通知 end -->
-            <!-- 用户信息和系统设置 start -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="/admin/developing">
-                    <i class="fa fa-user fa-fw"></i>
-                    <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-user ">
-                    <li>
-                        <input type="hidden" id="currentAdminId" value="${admin.id}">
-                    </li>
-                    <li><a href="/admin/developing"><i class="fa fa-user fa-fw"></i>
-                        管理员：${admin.adminName}</a>
-                    </li>
-                    <li><a href="/admin/developing"><i class="fa fa-gear fa-fw"></i> 系统设置</a></li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="${path}/admin/logout">
-                            <i class="fa fa-sign-out fa-fw"></i>退出登录
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <!-- 用户信息和系统设置结束 -->
-        </ul>
-        <jsp:include page="/admin/nav"/>
-    </nav>
+    <jsp:include page="/admin/nav" />
     <div id="app" style="margin-left: 250px;margin-top: 20px;">
         <div class="wy-filter">
             <el-input v-model="query.value" size="small" placeholder="请输入姓名" style="width: 250px"></el-input>
