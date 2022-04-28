@@ -3,6 +3,7 @@ package club.service.impl;
 import club.dao.ZhiChuMapper;
 import club.pojo.ZhiChu;
 import club.service.ZhiChuService;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -37,6 +38,17 @@ public class ZhiChuServiceImpl extends ServiceImpl<ZhiChuMapper, ZhiChu> impleme
     @Override
     public boolean saveBatch(ArrayList<ZhiChu> list) {
         return this.insertBatch(list);
+    }
+
+    @Override
+    public int getProfit(String format) {
+        EntityWrapper<ZhiChu> wrapper = new EntityWrapper<>();
+        if(StrUtil.isNotBlank(format)){
+            wrapper.like("time",format);
+        }
+        ZhiChu zhiChu = this.selectOne(wrapper);
+        return zhiChu.getShoujine() - zhiChu.getZhijine();
+
     }
 
     @Override

@@ -21,4 +21,6 @@ public interface ZhiChuService extends IService<ZhiChu> {
     PageInfo<ZhiChu> list(Integer pageNum, Integer pageSize, String value);
 
     boolean saveBatch(ArrayList<ZhiChu> list);
+
+    int getProfit(String format);
 }

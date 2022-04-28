@@ -59,6 +59,14 @@ template use File | Settings | File Templates. --%>
 <div id="wrapper">
     <!-- 导航栏部分 -->
     <jsp:include page="/admin/nav"/>
+
+    <div class="tableTop" style="display: flex;margin-left:300px">
+        <div class="tableTopItem"style="height: 200px;width: 200px;">
+            今日利润:${dataList.profit}元
+        </div>
+        <div class="tableTopItem"style="height: 200px;width: 200px;">用户数:${dataList.userCount}</div>
+        <div class="tableTopItem"style="height: 200px;width: 200px;">宠物数:${dataList.petCount}</div>
+    </div>
     <!-- 数据显示-->
     <div class="tableContainer">
         <div
@@ -126,6 +134,12 @@ template use File | Settings | File Templates. --%>
     .tableContainer{
         display: flex;
         flex-wrap: wrap;
+    }
+    .tableTopItem{
+        margin-left: 20px;
+        background: rgb(84,112,198);
+        text-align: center;
+        padding-top: 100px;
     }
 </style>
 

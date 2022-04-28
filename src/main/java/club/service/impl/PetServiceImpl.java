@@ -1,10 +1,13 @@
 package club.service.impl;
 
 import club.dao.PetMapper;
+import club.dao.ZhiLiaoMapper;
 import club.pojo.Form;
 import club.pojo.Pet;
+import club.pojo.ZhiLiao;
 import club.service.PetService;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -21,7 +24,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class PetServiceImpl implements PetService {
+public class PetServiceImpl extends ServiceImpl<PetMapper, Pet> implements PetService {
 
     @Resource
     private PetMapper petMapper;

@@ -4,10 +4,7 @@ import club.pojo.Admins;
 import club.pojo.Bing;
 import club.pojo.Publish;
 import club.pojo.ZhiChu;
-import club.service.AdminService;
-import club.service.BingService;
-import club.service.PublishService;
-import club.service.ZhiChuService;
+import club.service.*;
 import club.util.Message;
 import club.vo.EchartsVO;
 import club.vo.ResponseVO;
@@ -20,19 +17,19 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -43,7 +40,10 @@ public class AdminController {
     private BingService bingService;
     @Autowired
     private ZhiChuService zhiChuService;
-
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private PetService petService;
     @Autowired
     private PublishService publishService;
 
@@ -99,7 +99,16 @@ public class AdminController {
         return "admin/add";
     }
     @RequestMapping("/showPage")
-    public String showPage(){
+    public String showPage(ModelMap map){
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        int userCount = userService.selectCount(null);
+        int petCount = petService.selectCount(null);
+        String format = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        int profit = zhiChuService.getProfit(format);
+        hashMap.put("userCount",userCount);
+        hashMap.put("petCount",petCount);
+        hashMap.put("profit",profit);
+        map.addAttribute("dataList",hashMap);
         return "admin/show";
     }
 
