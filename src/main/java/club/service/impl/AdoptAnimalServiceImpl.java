@@ -83,6 +83,10 @@ public class AdoptAnimalServiceImpl implements AdoptAnimalService {
         AdoptAnimal adoptAnimal = adoptAnimalMapper.selectById(id);
         adoptAnimal.setState(state);
         Integer integer = adoptAnimalMapper.updateById(adoptAnimal);
+        //把宠物状态更改
+        Pet pet = petMapper.selectById(adoptAnimal.getPetId());
+        pet.setState(state);
+        petMapper.updateById(pet);
         return integer;
     }
 

@@ -416,8 +416,13 @@
             contentType: false, // 告诉jQuery不要去设置Content-Type请求头
             date: adopt,//控制层并没有用到这里的数据，可以省略掉
             success: function (result) {
-                alert("提交申请成功");
-                $("#adopt_btn").click();
+                if(result.code == 100){
+                    alert("提交申请成功");
+                    $("#adopt_btn").click();
+                }else{
+                    alert(result.message);
+                }
+
             },
             error: function (result) {
                 console.log(result);

@@ -37,14 +37,19 @@ public class AdoptAnimalController {
     public Message create(HttpSession session){
         User user = (User) session.getAttribute("user");
         Pet pet = (Pet) session.getAttribute("pet");
-        pet.setState(1);
-        AdoptAnimal adoptAnimal = new AdoptAnimal();
-        adoptAnimal.setUserId(user.getId());
-        adoptAnimal.setPetId(pet.getId());
-        adoptAnimal.setAdoptTime(new Date());
-        adoptAnimal.setState(1);
-        adoptAnimalService.create(adoptAnimal);
-        return Message.success();
+        if(pet.getState() == 0){
+            pet.setState(1);
+            AdoptAnimal adoptAnimal = new AdoptAnimal();
+            adoptAnimal.setUserId(user.getId());
+            adoptAnimal.setPetId(pet.getId());
+            adoptAnimal.setAdoptTime(new Date());
+            adoptAnimal.setState(1);
+            adoptAnimalService.create(adoptAnimal);
+            return Message.success();
+        }else {
+            return Message.fail("已经有主人了");
+        }
+
     }
 
     @RequestMapping("/adopts")
@@ -72,6 +77,7 @@ public class AdoptAnimalController {
     @ResponseBody
     public Message agree(Integer id){
         System.out.println(id);
+
         int update = adoptAnimalService.update(id, 2);
         if(update>0){
             return Message.success();

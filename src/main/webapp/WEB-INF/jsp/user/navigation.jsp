@@ -185,7 +185,7 @@
                             <div class="form-group" style="display: flex">
                                 <label for="new_loginPwd" class="col-sm-2 control-label">验证码</label>
                                 <div>
-                                    <img src="${path}/user/getCode" alt="">
+                                    <img src="${path}/user/getCode" alt=""  onclick="changeVerifyCode(this)">
                                 </div>
                                 <div class="col-sm-8" style="width: 280px">
                                     <input class="form-control" id="new_loginCode" placeholder="验证码"
@@ -379,6 +379,9 @@
 
 
 <script type="text/javascript">
+    function changeVerifyCode(img) {
+        img.src = "${path}/user/getCode?" + Math.floor(Math.random() * 100);
+    }
 
     $("#user_login_btn").click(function () {
         $.ajax({
