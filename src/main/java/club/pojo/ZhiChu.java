@@ -22,6 +22,8 @@ public class ZhiChu {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date time;
     private String zhichuleibie;
-    private Integer jine;
+    private Integer zhijine;
+    private String shouruleibie;
+    private Integer shoujine;
     private String miaoshu;
 }

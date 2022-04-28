@@ -37,6 +37,12 @@ public class Message {
         result.setMessage("处理失败！");
         return result;
     }
+    public static Message fail(String message){
+        Message result = new Message();
+        result.setCode(200);
+        result.setMessage(message);
+        return result;
+    }
 
     public Message add(String key,Object value){
         this.getExtend().put(key, value);

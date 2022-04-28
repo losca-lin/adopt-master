@@ -63,12 +63,12 @@ template use File | Settings | File Templates. --%>
     <div class="tableContainer">
         <div
                 id="main"
-                style="width: 600px; height: 300px; margin-left: 300px"
+                style="width: 600px; height: 600px; margin-left: 250px"
         ></div>
 
         <div
                 id="main2"
-                style="width: 600px; height: 300px; margin-left: 300px"
+                style="width: 600px; height: 600px; margin-left: 100px"
         ></div>
 
         <div
@@ -125,7 +125,6 @@ template use File | Settings | File Templates. --%>
 <style>
     .tableContainer{
         display: flex;
-        flex-direction: column;
         flex-wrap: wrap;
     }
 </style>
@@ -180,35 +179,90 @@ template use File | Settings | File Templates. --%>
             // 基于准备好的dom，初始化echarts实例
             var myChart = echarts.init(document.getElementById("main2"));
             let xData = [];
-            let yData = [];
+            let zhiData = [];
+            let shouData = [];
             res.data.data.forEach((item) => {
                 xData.push(item.time);
-                yData.push(item.jine);
+                zhiData.push(item.zhijine);
+                shouData.push(item.shoujine);
             });
             // 指定图表的配置项和数据
             var option = {
                 title: {
-                    text: "支出显示",
+                    text: '收支统计'
                 },
-                tooltip: {},
-                legend: {
-                    data: ["数量"],
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {},
+                toolbox: {
+                    show: true,
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'
+                        },
+                        dataView: { readOnly: false },
+                        magicType: { type: ['line', 'bar'] },
+                        restore: {},
+                        saveAsImage: {}
+                    }
                 },
                 xAxis: {
-                    data: xData,
-                    axisLabel: {
-                        interval: 0,
-                        rotate: 15,
-                    },
+                    type: 'category',
+                    boundaryGap: false,
+                    data: xData
                 },
-                yAxis: {},
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value}'
+                    }
+                },
                 series: [
                     {
-                        name: "支出金额",
-                        type: "line",
-                        data: yData,
+                        name: '支出',
+                        type: 'line',
+                        data: zhiData,
+                        markPoint: {
+                            data: [
+                                { type: 'max', name: 'Max' },
+                                { type: 'min', name: 'Min' }
+                            ]
+                        },
+                        markLine: {
+                            data: [{ type: 'average', name: 'Avg' }]
+                        }
                     },
-                ],
+                    {
+                        name: '收入',
+                        type: 'line',
+                        data: shouData,
+                        markPoint: {
+                            data: [{ name: '周最低', value: -2, xAxis: 1, yAxis: -1.5 }]
+                        },
+                        markLine: {
+                            data: [
+                                { type: 'average', name: 'Avg' },
+                                [
+                                    {
+                                        symbol: 'none',
+                                        x: '90%',
+                                        yAxis: 'max'
+                                    },
+                                    {
+                                        symbol: 'circle',
+                                        label: {
+                                            position: 'start',
+                                            formatter: 'Max'
+                                        },
+                                        type: 'max',
+                                        name: '最高点'
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ]
             };
 
             // 使用刚指定的配置项和数据显示图表。
@@ -227,6 +281,10 @@ template use File | Settings | File Templates. --%>
             const forms = res.data.data
 
             option = {
+                title: {
+                    text: '宠物种类统计',
+                    left: 'center'
+                },
                 legend: {
                     top: 'bottom'
                 },

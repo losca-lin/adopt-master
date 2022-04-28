@@ -2,7 +2,6 @@ package club.controller;
 
 import club.pojo.AD;
 import club.service.ADService;
-import club.service.DonateService;
 import club.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -25,10 +23,11 @@ import java.util.List;
 public class AdController {
     @Autowired
     ADService adService;
+
     @RequestMapping("/adPage")
-    public String adPage(HttpSession session){
+    public String adPage(HttpSession session) {
         List<AD> ads = adService.selectList(null);
-        session.setAttribute("ads",ads);
+        session.setAttribute("ads", ads);
         return "user/ad";
     }
 
@@ -41,13 +40,13 @@ public class AdController {
     @ResponseBody
     public ResponseVO allMoney(@RequestParam(defaultValue = "1") Integer pageNum
             , @RequestParam(defaultValue = "8") Integer pageSize
-            , @RequestParam String value){
-        return ResponseVO.success(adService.list(pageNum,pageSize,value));
+            , @RequestParam String value) {
+        return ResponseVO.success(adService.list(pageNum, pageSize, value));
     }
-    
-    @RequestMapping(value = "/updateAd",method = RequestMethod.POST)
+
+    @RequestMapping(value = "/updateAd", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseVO updateAd(MultipartFile file,AD ad){
+    public ResponseVO updateAd(MultipartFile file, AD ad) {
         String pic = FileLoad.uploadAdPic(file);
         ad.setPic(pic);
         return ResponseVO.success(adService.updateById(ad));
@@ -55,14 +54,15 @@ public class AdController {
 
     @RequestMapping(value = "/delAd")
     @ResponseBody
-    public ResponseVO updateAd(Integer id){
+    public ResponseVO updateAd(Integer id) {
         return ResponseVO.success(adService.deleteById(id));
     }
 
-    @RequestMapping("/test")
+    @RequestMapping(value = "/addAdById",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseVO test(HttpServletRequest request){
-        String contextPath = request.getContextPath();
-        return ResponseVO.success();
+    public ResponseVO addAdById(MultipartFile file, AD ad) {
+        String pic = FileLoad.uploadAdPic(file);
+        ad.setPic(pic);
+        return ResponseVO.success(adService.insert(ad));
     }
 }

@@ -2,6 +2,7 @@ package club.controller;
 
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,8 @@ import java.util.UUID;
  */
 @Controller
 public class FileLoad {
-    public static String property = System.getProperty("user.dir");
+    //获取项目目录
+    public static String property = new File(ClassUtils.getDefaultClassLoader().getResource("").getPath()).getParentFile().getParentFile().getParentFile().getParent();
 
     public static String uploadAdminPic(MultipartFile file) {
         String picName = UUID.randomUUID().toString();
@@ -50,6 +52,7 @@ public class FileLoad {
     }
 
     public static String uploadPetPic(MultipartFile file) {
+        System.out.println(property);
         String picName = UUID.randomUUID().toString();
         //获取上传文件得元素得名称
         String fileName = file.getOriginalFilename();

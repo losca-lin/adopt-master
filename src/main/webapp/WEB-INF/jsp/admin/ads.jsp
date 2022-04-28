@@ -159,7 +159,38 @@
             </span>
         </el-dialog>
 
+        <%--新增弹出框--%>
+        <el-dialog title="新增广告" :visible.sync="addVisible" width="30%">
+            <el-form ref="form" :model="addForm" label-width="70px">
+                <el-form-item label="类型">
+                    <el-input v-model="addForm.type"></el-input>
+                </el-form-item>
+                <el-form-item label="品牌">
+                    <el-input v-model="addForm.brand"></el-input>
+                </el-form-item>
+                <el-form-item label="描述">
+                    <el-input v-model="addForm.describe" type='textarea'></el-input>
+                </el-form-item>
+                <el-form-item label="链接">
+                    <el-input v-model="addForm.link"></el-input>
+                </el-form-item>
+                <el-form-item label="商品图片">
+                    <el-upload v-model="addForm.file" action="#" list-type="picture-card" :auto-upload="false"
+                               :multiple="false" :on-change="changeIcon2" :on-remove="removeIcon2" :limit="1">
+                        <i slot="default" class="el-icon-plus"></i>
+                    </el-upload>
+                </el-form-item>
+            </el-form>
+
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="addVisible = false">取 消</el-button>
+                <el-button type="primary" @click="addEdit">确 定</el-button>
+            </span>
+        </el-dialog>
+
     </div>
+
+
 
 </div>
 <!-- 开发环境版本，包含了有帮助的命令行警告 -->
@@ -207,7 +238,13 @@
                     link:'',
                     file:null
                 },
-                addForm: {},
+                addForm: {
+                    type:'',
+                    brand:'',
+                    describe:'',
+                    link:'',
+                    file:null
+                },
 
             }
         },
@@ -217,6 +254,12 @@
             },
             removeIcon() {
                 this.form.file = null
+            },
+            changeIcon2(file) {
+                this.addForm.file = file.raw
+            },
+            removeIcon2() {
+                this.addForm.file = null
             },
             tableRowClassName({row, rowIndex}) {
                 if (rowIndex === 1) {
@@ -265,9 +308,13 @@
                 this.addVisible = true
             },
             addEdit() {
-                axios.post("${path}/admin/addMoneyById", this.addForm).then(res => {
-                    this.addVisible = false;
+                const data = new FormData();
+                for(const key in this.addForm){
+                    data.append(key,this.addForm[key])
+                }
+                axios.post("${path}/ad/addAdById", data).then(res => {
                     this.getAll();
+                    this.addVisible = false;
                 })
             },
             downExcel() {

@@ -78,9 +78,18 @@
                     label="支出类别">
             </el-table-column>
             <el-table-column
-                    prop="jine"
-                    label="金额">
+                    prop="zhijine"
+                    label="支出金额">
             </el-table-column>
+            <el-table-column
+                    prop="shouruleibie"
+                    label="收入类别">
+            </el-table-column>
+            <el-table-column
+                    prop="shoujine"
+                    label="收入金额">
+            </el-table-column>
+
             <el-table-column label="描述" prop="miaoshu">
 
             </el-table-column>
@@ -138,8 +147,14 @@
                 <el-form-item label="支出类别">
                     <el-input v-model="form.zhichuleibie"></el-input>
                 </el-form-item>
-                <el-form-item label="金额">
-                    <el-input v-model="form.jine"></el-input>
+                <el-form-item label="支出金额">
+                    <el-input v-model="form.zhijine"></el-input>
+                </el-form-item>
+                <el-form-item label="收入类别">
+                    <el-input v-model="form.shouruleibie"></el-input>
+                </el-form-item>
+                <el-form-item label="收入金额">
+                    <el-input v-model="form.shoujine"></el-input>
                 </el-form-item>
                 <el-form-item label="描述">
                     <el-input type='textarea' v-model="form.miaoshu"></el-input>
@@ -167,8 +182,14 @@
                 <el-form-item label="支出类别">
                     <el-input v-model="addForm.zhichuleibie"></el-input>
                 </el-form-item>
-                <el-form-item label="金额">
-                    <el-input v-model="addForm.jine"></el-input>
+                <el-form-item label="支出金额">
+                    <el-input v-model="addForm.zhijine"></el-input>
+                </el-form-item>
+                <el-form-item label="收入类别">
+                    <el-input v-model="addForm.shouruleibie"></el-input>
+                </el-form-item>
+                <el-form-item label="收入金额">
+                    <el-input v-model="addForm.shoujine"></el-input>
                 </el-form-item>
                 <el-form-item label="描述">
                     <el-input type='textarea' v-model="addForm.miaoshu"></el-input>
@@ -259,6 +280,7 @@
                 })
             },
             handleUpdate(index, row) {
+                console.log(row)
                 this.form = row
                 this.editVisible = true
             },

@@ -1,9 +1,14 @@
 package club.service.impl;
 
 import club.dao.UserMapper;
+import club.dao.ZhiChuMapper;
 import club.pojo.User;
+import club.pojo.ZhiChu;
 import club.service.UserService;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.service.IService;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -14,7 +19,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Resource
     private UserMapper userMapper;
     @Override
@@ -80,5 +85,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public int del(Integer id) {
         return userMapper.deleteById(id);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        EntityWrapper<User> wrapper = new EntityWrapper<>();
+        if(StrUtil.isNotBlank(username)){
+            wrapper.eq("userName", username);
+        }
+       return this.selectOne(wrapper);
     }
 }

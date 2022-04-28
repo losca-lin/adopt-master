@@ -18,13 +18,13 @@
     <script src="${path}/static/js/user/jquery-2.2.3.min.js"></script>
     <script src="${path}/static/bootstrap/js/bootstrap.min.js"></script>
     <!-- Owl-Carousel-CSS -->
-   
+
     <link rel="stylesheet" href="${path}/static/css/user/header.css">
     <style>
-        .ad_header{     
-        padding-right: 15px !important;
-        padding-left: 15px !important;
-        margin: auto !important;
+        .ad_header {
+            padding-right: 15px !important;
+            padding-left: 15px !important;
+            margin: auto !important;
         }
     </style>
 
@@ -38,11 +38,11 @@
             <div class='collapse navbar-collapse'>
 
                 <li class="logo">
-                    <a  href="${path}/user/index"
-                      ><img
-                        src="${path}/static/images/lg.png"
-                        alt="Awesome Logo"
-                        title=""
+                    <a href="${path}/user/index"
+                    ><img
+                            src="${path}/static/images/lg.png"
+                            alt="Awesome Logo"
+                            title=""
                     /></a>
                 </li>
                 <ul>
@@ -58,9 +58,9 @@
                         </ul>
                       </li>
                  -->
-                <%-- <li>--%>
-                <%--    <a href="${path}/user/teamBlog">基地</a>--%>
-                <%--</li>--%>
+                    <%-- <li>--%>
+                    <%--    <a href="${path}/user/teamBlog">基地</a>--%>
+                    <%--</li>--%>
                     <li>
                         <a href="${path}/user/service">领养</a>
                     </li>
@@ -75,29 +75,29 @@
                     <li class="dropdown">
                         <a href="#">捐献中心 +</a>
                         <ul>
-                          <li>
-                            <a href="${path}/donate/donatePage?name=money" >去捐款</a>
-                          </li>
-                          <li>
-                            <a href="${path}/donate/donatePage?name=goods">去捐物</a>
-                          </li>
+                            <li>
+                                <a href="${path}/donate/donatePage?name=money">去捐款</a>
+                            </li>
+                            <li>
+                                <a href="${path}/donate/donatePage?name=goods">去捐物</a>
+                            </li>
                         </ul>
-                      </li>
+                    </li>
 
                     <li>
                         <a href="${path}/publish/myPublishPage">我的发布</a>
                     </li>
-                  
-                 
+
+
                     <li class="dropdown">
                         <a href="#">知识中心 +</a>
                         <ul>
-                          <li>
-                            <a href="${path}/user/cat">养猫知识</a>
-                          </li>
-                          <li>
-                            <a href="${path}/user/dog">养狗知识</a>
-                          </li>
+                            <li>
+                                <a href="${path}/user/cat">养猫知识</a>
+                            </li>
+                            <li>
+                                <a href="${path}/user/dog">养狗知识</a>
+                            </li>
                         </ul>
                     </li>
 
@@ -105,7 +105,6 @@
                         <a href="ad.html">走失发布</a>
                     </li> -->
 
-                    
 
                     <li>
                         <a href="${path}/blog/blogPage">公告</a>
@@ -183,6 +182,16 @@
                                            name="password">
                                 </div>
                             </div>
+                            <div class="form-group" style="display: flex">
+                                <label for="new_loginPwd" class="col-sm-2 control-label">验证码</label>
+                                <div>
+                                    <img src="${path}/user/getCode" alt="">
+                                </div>
+                                <div class="col-sm-8" style="width: 280px">
+                                    <input class="form-control" id="new_loginCode" placeholder="验证码"
+                                           name="code">
+                                </div>
+                            </div>
                             <input type="submit" value="" id="dologin" style="display: none">
                         </form>
                     </div>
@@ -207,7 +216,7 @@
                                     用户密码
                                 </label>
                                 <div class="col-sm-4">
-                                    <input type="password"  class="form-control" id="new_password" placeholder="用户密码"
+                                    <input type="password" class="form-control" id="new_password" placeholder="用户密码"
                                            name="password">
                                 </div>
                             </div>
@@ -378,10 +387,10 @@
             data: $("#user_login_form").serialize(),
             success: function (result) {
                 var code = result.code;
-                if (code == 100){
+                if (code == 100) {
                     alert("登录成功！");
-                }else {
-                    alert("用户名或密码错误！");
+                } else {
+                    alert(result.message);
                 }
                 window.location.reload();
             },
@@ -448,7 +457,7 @@
     $("#user_register_btn").click(function () {
         var name = $("#new_userName").val();
         var pass = $("#new_password").val();
-        if (name == "" ) {
+        if (name == "") {
             alert("请输入用户名")
         } else if (pass == "") {
             alert("请输入密码")
@@ -458,11 +467,16 @@
                 type: "POST",
                 data: $("#user_register_form").serialize(),
                 success: function (result) {
-                    alert("注册成功，请去登录！");
-                    window.location.href = "${path}/user/index";
+                    var code = result.code;
+                    if (code == 100) {
+                        alert("注册成功，请去登录！");
+                        window.location.href = "${path}/user/index";
+                    } else {
+                        alert(result.message);
+                    }
                 },
                 error: function (result) {
-                    alert("注册失败");
+                    alert(result.message);
                 }
             });
         }

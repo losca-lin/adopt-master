@@ -1,11 +1,13 @@
 package club.service;
 
 import club.pojo.User;
+import club.pojo.ZhiChu;
+import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends IService<User> {
     List<User> findByName(String userName, Integer state);
     List<User> showName(String userName);
     //登录
@@ -17,4 +19,6 @@ public interface UserService {
     User findById(Integer id);
     PageInfo<User> allUser(String userName, Integer pageNum, Integer pageSize);
     int del(Integer id);
+
+    User findByUsername(String username);
 }

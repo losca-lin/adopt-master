@@ -73,7 +73,7 @@ public class AdminController {
             xml.setZhichuleibie(row.getCell(1).getStringCellValue().trim());
             String trim = row.getCell(2).getStringCellValue().trim();
             Integer money = Integer.parseInt(trim);
-            xml.setJine(money);
+            xml.setZhijine(money);
             xml.setMiaoshu(row.getCell(3).getStringCellValue().trim());
             list.add(xml);
         }
@@ -313,7 +313,5 @@ public class AdminController {
         return ResponseVO.success(zhiChuService.insert(zhiChu));
     }
 
-    /**
-     *
-     */
+
 }
