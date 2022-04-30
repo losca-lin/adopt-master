@@ -46,7 +46,21 @@ public class AdminController {
     private PetService petService;
     @Autowired
     private PublishService publishService;
+    @Autowired
+    private EmployeeService employeeService;
 
+    @RequestMapping("/employeePage")
+    public String employeePage(){
+        return "admin/employee";
+    }
+    @RequestMapping("/visitPage")
+    public String visitPage(){
+        return "admin/visit";
+    }
+    @RequestMapping("/adAdminPage")
+    public String adAdminPage(){
+        return "admin/ads";
+    }
     @RequestMapping("/zhiliaoPage")
     public String healPage(){
         return "admin/zhiliao";

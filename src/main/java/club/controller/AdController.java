@@ -33,7 +33,7 @@ public class AdController {
 
     @RequestMapping("/adAdminPage")
     public String donatePage() {
-        return "admin/ads";
+        return "employee/ads";
     }
 
     @RequestMapping("/allAds")

@@ -25,29 +25,14 @@
     <a
             class="dropdown-toggle"
             data-toggle="dropdown"
-            href="/admin/developing"
+            href="/employee/developing"
     >
       <i class="fa fa-user fa-fw"></i>
       <i class="fa fa-caret-down"></i>
     </a>
     <ul class="dropdown-menu dropdown-user">
       <li>
-        <input type="hidden" id="currentAdminId" value="${admin.id}" />
-      </li>
-      <li>
-        <a href="/admin/developing"
-        ><i class="fa fa-user fa-fw"></i>
-          管理员：${admin.adminName}</a
-        >
-      </li>
-      <li>
-        <a href="/admin/developing"
-        ><i class="fa fa-gear fa-fw"></i> 系统设置</a
-        >
-      </li>
-      <li class="divider"></li>
-      <li>
-        <a href="${path}/admin/logout">
+        <a href="${path}/employee/logout">
           <i class="fa fa-sign-out fa-fw"></i>退出登录
         </a>
       </li>
@@ -67,88 +52,60 @@
     <div id="collapseListGroup3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading3">
       <ul class="list-group">
         <li class="list-group-item my_font">
-          <a href="${path}/admin/user">
+          <a href="${path}/employee/user">
             <i class="fa fa-flash fa-fw"></i> 用户信息
           </a>
         </li>
+
+
         <li class="list-group-item my_font">
-          <a href="${path}/admin/admin">
-            <i class="fa fa-flash fa-fw"></i> 管理员信息
-          </a>
-        </li>
-        <li class="list-group-item my_font">
-          <a href="${path}/admin/moneyPage">
-            <i class="fa fa-sitemap fa-fw"></i> 收支管理
-          </a>
-        </li>
-        <li class="list-group-item my_font">
-          <a href="${path}/admin/pet">
+          <a href="${path}/employee/pet">
             <i class="fa fa-sitemap fa-fw"></i> 宠物管理
           </a>
         </li>
         <li class="list-group-item my_font">
-          <a href="${path}/admin/adopt">
+          <a href="${path}/employee/adopt">
             <i class="fa fa-sitemap fa-fw"></i> 领养管理
           </a>
         </li>
+
+
+
+
         <li class="list-group-item my_font">
-          <a href="${path}/admin/comment">
-            <i class="fa fa-sitemap fa-fw"></i> 评论管理
-          </a>
-        </li>
-        <li class="list-group-item my_font">
-          <a href="${path}/admin/blog">
-            <i class="fa fa-sitemap fa-fw"></i> 公告管理
-          </a>
-        </li>
-        <li class="list-group-item my_font">
-          <a href="${path}/admin/apply">
-            <i class="fa fa-sitemap fa-fw"></i> 志愿者申请
-          </a>
-        </li>
-        <li class="list-group-item my_font">
-          <a href="${path}/admin/zhiliaoPage">
-            <i class="fa fa-sitemap fa-fw"></i> 治疗管理
-          </a>
-        </li>
-        <li class="list-group-item my_font">
-          <a href="${path}/admin/agree">
+          <a href="${path}/employee/agree">
             <i class="fa fa-sitemap fa-fw"></i> 同意领养列表
           </a>
         </li>
         <li class="list-group-item my_font">
-          <a href="${path}/admin/visitPage">
+          <a href="${path}/visit/visitPage">
             <i class="fa fa-sitemap fa-fw"></i> 回访列表
           </a>
         </li>
         <li class="list-group-item my_font">
-          <a href="${path}/admin/disAgree">
+          <a href="${path}/employee/disAgree">
             <i class="fa fa-sitemap fa-fw"></i> 不同意领养列表
           </a>
         </li>
         <li class="list-group-item my_font">
-          <a href="${path}/admin/showPage">
+          <a href="${path}/employee/showPage">
             <i class="fa fa-sitemap fa-fw"></i> 数据图表
           </a>
         </li>
 
         <%--<li class="list-group-item my_font">--%>
-        <%--  <a href="${path}/admin/applyShow">--%>
+        <%--  <a href="${path}/employee/applyShow">--%>
         <%--    <i class="fa fa-sitemap fa-fw"></i> 支出图表--%>
         <%--  </a>--%>
         <%--</li>--%>
         <li class="list-group-item my_font">
-          <a href="${path}/admin/publishPage">
+          <a href="${path}/employee/publishPage">
             <i class="fa fa-sitemap fa-fw"></i> 发布管理
           </a>
         </li>
+
         <li class="list-group-item my_font">
-          <a href="${path}/donate/adminDonatePage">
-            <i class="fa fa-sitemap fa-fw"></i> 捐款捐物
-          </a>
-        </li>
-        <li class="list-group-item my_font">
-          <a href="${path}/admin/adAdminPage">
+          <a href="${path}/ad/adAdminPage">
             <i class="fa fa-sitemap fa-fw"></i> 广告管理
           </a>
         </li>
