@@ -75,6 +75,18 @@
                     prop="content"
                     label="内容">
             </el-table-column>
+            <el-table-column
+                    prop="addr"
+                    label="地址">
+            </el-table-column>
+            <el-table-column
+                    prop="time"
+                    label="时间">
+            </el-table-column>
+            <el-table-column
+                    prop="phone"
+                    label="手机号">
+            </el-table-column>
             <el-table-column label="状态">
                 <template slot-scope="scope">
                     <el-tag

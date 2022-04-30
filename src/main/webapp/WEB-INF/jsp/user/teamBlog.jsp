@@ -14,10 +14,7 @@ template use File | Settings | File Templates. --%>
     <meta charset="UTF-8"/>
     <meta name="keywords" content=""/>
     <style type="text/css">
-        #blog {
-            background: url(/static/images/login/tmbg-white.jpg) no-repeat center fixed;
-            background-size: cover;
-        }
+
 
         .myfont {
             font-size: 10px;
@@ -47,20 +44,36 @@ template use File | Settings | File Templates. --%>
 <body>
 <jsp:include page="navigation.jsp"></jsp:include>
 <div id="app">
-    <el-carousel :interval="4000" indicator-position="outside" height="300px" style="
+    <div>
+        <el-carousel :interval="4000" indicator-position="outside" style="
     width: 80%;
-    margin: 100px;">
-        <el-carousel-item v-for="item in tableData" :key="item">
-            <h2 class="medium" style="font-weight: bold">标题：{{ item.title }}</h2>
-            <h3 class="medium">事件：{{ item.event }}</h3>
-            <h3 class="medium">地点：{{ item.address }}</h3>
-            <h3 class="medium">人物：{{ item.peoples }}</h3>
-            <h3 class="medium">时间：{{ item.actionTime }}</h3>
-        </el-carousel-item>
-    </el-carousel>
-</div>
-<jsp:include page="slider.jsp"></jsp:include>
+    margin:50px">
+            <el-carousel-item v-for="item in tableData" :key="item.id">
+                <h2 class="medium" style="font-weight: bold">标题：{{ item.title }}</h2>
+                <h3 class="medium">事件：{{ item.event }}</h3>
+                <h3 class="medium">地点：{{ item.address }}</h3>
+                <h3 class="medium">人物：{{ item.peoples }}</h3>
+                <h3 class="medium">时间：{{ item.actionTime }}</h3>
+            </el-carousel-item>
+        </el-carousel>
+    </div>
+    <div class="publishCard">
+        <el-card class="box-card" v-for="(item2,index2) in tableData2" :key="index2">
+            <div>
+                <h2 class="medium" style="font-weight: bold">标题：{{ item2.title }}</h2>
 
+                <h3 class="medium">内容：{{ item2.content }}</h3>
+                <h3 class="medium">状态：{{ item2.status==0?'丢失':'找到' }}</h3>
+                <h3 class="medium">地址：{{ item2.addr }}</h3>
+                <h3 class="medium">时间：{{ item2.time }}</h3>
+                <h3 class="medium">手机号：{{ item2.phone }}</h3>
+                <h3 class="medium">用户名：{{ item2.username }}</h3>
+            </div>
+        </el-card>
+    </div>
+
+</div>
+<%--<jsp:include page="slider.jsp"></jsp:include>--%>
 
 
 <!-- 开发环境版本，包含了有帮助的命令行警告 -->
@@ -75,7 +88,18 @@ template use File | Settings | File Templates. --%>
         font-size: 14px;
     }
 
-    .el-carousel__item h2,h3{
+    .publishCard {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .box-card {
+        width: 33.33%;
+        margin-left: 50px;
+        margin-top: 10px;
+    }
+
+    .el-carousel__item h2, h3 {
         color: #030303;
         font-size: 24px;
         padding-left: 10px;
@@ -125,11 +149,13 @@ template use File | Settings | File Templates. --%>
 </style>
 <script>
 
+
     new Vue({
         el: '#app',
         data() {
             return {
-                tableData: []
+                tableData: [],
+                tableData2: []
 
             }
         },
@@ -142,7 +168,12 @@ template use File | Settings | File Templates. --%>
                     console.log(res)
                     this.tableData = res.data.data
                 })
-            }
+                axios.get("${path}/admin/getAllPublish").then(res => {
+                    console.log(res)
+                    this.tableData2 = res.data.data
+                })
+            },
+
         }
     })
 </script>

@@ -22,4 +22,5 @@ public class Publish {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date time;
     private String addr;
+    private String phone;
 }
