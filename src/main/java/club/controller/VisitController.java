@@ -21,6 +21,7 @@ public class VisitController {
     VisitService visitService;
 
     @RequestMapping(value = "/addVisit", method = RequestMethod.POST)
+    @ResponseBody
     public ResponseVO addVisit(Visit visit) {
         return ResponseVO.success(visitService.insert(visit));
     }
