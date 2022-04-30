@@ -78,7 +78,7 @@
         </li>
         <li class="list-group-item my_font">
           <a href="${path}/admin/moneyPage">
-            <i class="fa fa-sitemap fa-fw"></i> 支出管理
+            <i class="fa fa-sitemap fa-fw"></i> 收支管理
           </a>
         </li>
         <li class="list-group-item my_font">
@@ -107,8 +107,18 @@
           </a>
         </li>
         <li class="list-group-item my_font">
+          <a href="${path}/admin/zhiliaoPage">
+            <i class="fa fa-sitemap fa-fw"></i> 治疗管理
+          </a>
+        </li>
+        <li class="list-group-item my_font">
           <a href="${path}/admin/agree">
             <i class="fa fa-sitemap fa-fw"></i> 同意领养列表
+          </a>
+        </li>
+        <li class="list-group-item my_font">
+          <a href="${path}/visit/visitPage">
+            <i class="fa fa-sitemap fa-fw"></i> 回访列表
           </a>
         </li>
         <li class="list-group-item my_font">

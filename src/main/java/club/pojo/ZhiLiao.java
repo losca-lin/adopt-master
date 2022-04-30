@@ -1,5 +1,6 @@
 package club.pojo;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -11,9 +12,10 @@ import java.time.LocalDate;
 @Data
 public class ZhiLiao {
     private Integer id;
-    private Integer fenleiId;
     private Integer bingId;
     private String bingqingmiaoshu;
-    private LocalDate time;
+    private String time;
     private String alive;
+    @TableField(exist = false)
+    private Bing bing;
 }

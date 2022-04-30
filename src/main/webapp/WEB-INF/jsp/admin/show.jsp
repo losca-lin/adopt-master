@@ -76,12 +76,12 @@ template use File | Settings | File Templates. --%>
 
         <div
                 id="main2"
-                style="width: 600px; height: 600px; margin-left: 100px"
+                style="width: 600px; height: 600px; margin-left: 250px"
         ></div>
 
         <div
                 id="main3"
-                style="width: 800px; height: 600px; margin-left: 300px"
+                style="width: 800px; height: 600px; margin-left: 250px"
         ></div>
     </div>
 </div>
@@ -145,7 +145,7 @@ template use File | Settings | File Templates. --%>
 
 <!-- 编写js代码 -->
 <script type="text/javascript">
-    axios.get("${path}/admin/getData").then((res) => {
+    axios.get("${path}/zhiliao/getTable").then((res) => {
         if (res.data.code == 200) {
             // 基于准备好的dom，初始化echarts实例
             var myChart = echarts.init(document.getElementById("main"));
@@ -153,12 +153,12 @@ template use File | Settings | File Templates. --%>
             let yData = [];
             res.data.data.forEach((item) => {
                 xData.push(item.name);
-                yData.push(item.count);
+                yData.push(item.rate);
             });
             // 指定图表的配置项和数据
             var option = {
                 title: {
-                    text: "数据显示",
+                    text: "病死率显示",
                 },
                 tooltip: {},
                 legend: {
@@ -174,7 +174,7 @@ template use File | Settings | File Templates. --%>
                 yAxis: {},
                 series: [
                     {
-                        name: "死亡数量",
+                        name: "死亡率",
                         type: "bar",
                         data: yData,
                     },

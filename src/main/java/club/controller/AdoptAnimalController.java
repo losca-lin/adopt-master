@@ -5,6 +5,7 @@ import club.pojo.Pet;
 import club.pojo.User;
 import club.service.AdoptAnimalService;
 import club.util.Message;
+import club.vo.ResponseVO;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,14 @@ import java.util.Date;
 public class AdoptAnimalController {
     @Resource
     private AdoptAnimalService adoptAnimalService;
+
+    @RequestMapping("/allAgreeAdopt")
+    @ResponseBody
+    public ResponseVO allAgreeAdopt(@RequestParam(defaultValue = "1") Integer pageNum
+            , @RequestParam(defaultValue = "8") Integer pageSize
+            , @RequestParam String value) {
+        return ResponseVO.success(adoptAnimalService.list(pageNum, pageSize, value));
+    }
 
     @RequestMapping("/apply")
     @ResponseBody

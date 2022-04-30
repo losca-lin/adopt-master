@@ -8,11 +8,13 @@ import club.pojo.Pet;
 import club.pojo.User;
 import club.service.AdoptAnimalService;
 import club.service.UserService;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -55,6 +57,26 @@ public class AdoptAnimalServiceImpl implements AdoptAnimalService {
         PageInfo<AdoptAnimal> pageInfo = new PageInfo<>(list);
         return pageInfo;
     }
+
+    @Override
+    public PageInfo list(Integer pageNum, Integer pageSize, String value) {
+        PageHelper.startPage(pageNum,pageSize);
+        EntityWrapper<AdoptAnimal> wrapper = new EntityWrapper<>();
+        if(StrUtil.isNotBlank(value)){
+            wrapper.like("adoptTime",value);
+        }
+        List<AdoptAnimal> adoptAnimals = adoptAnimalMapper.selectList(wrapper.eq("state", 2));
+        for (AdoptAnimal adoptAnimal : adoptAnimals) {
+            Pet pet = petMapper.selectById(adoptAnimal.getPetId());
+            adoptAnimal.setPet(pet);
+            User user = userMapper.selectById(adoptAnimal.getUserId());
+            adoptAnimal.setUser(user);
+        }
+        PageInfo<AdoptAnimal> pageInfo = new PageInfo<>(adoptAnimals);
+        return pageInfo;
+
+    }
+
     @Override
     public Integer create(AdoptAnimal adoptAnimal) {
         return adoptAnimalMapper.insert(adoptAnimal);

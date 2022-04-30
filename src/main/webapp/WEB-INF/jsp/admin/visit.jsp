@@ -57,7 +57,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
       <jsp:include page="/admin/nav" />
       <div id="app" style="margin-left: 250px;margin-top: 20px;">
         <div class="wy-filter">
-          <el-input v-model="query.value" size="small" placeholder="请输入领养时间" style="width: 250px"></el-input>
+          <el-input v-model="query.value" size="small" placeholder="请输入用户名" style="width: 250px"></el-input>
           <el-button type="success" size="small" plain icon="el-icon-search" @click="find">查询</el-button>
         </div>
         <el-table
@@ -71,40 +71,18 @@ contentType="text/html;charset=UTF-8" language="java" %>
                   width="180">
           </el-table-column>
           <el-table-column
-                  prop="user.userName"
+                  prop="username"
                   label="用户名"
                   width="180">
           </el-table-column>
           <el-table-column
-                  prop="pet.petName"
-                  label="宠物名">
+                  prop="time"
+                  label="时间">
           </el-table-column>
 
-          <el-table-column label="状态">
-            <template slot-scope="scope">
-              <span v-if="scope.row.state == 2">已同意</span>
-              <span v-else>异常</span>
-            </template>
-
-          </el-table-column>
-          <el-table-column label="领养时间" prop="adoptTime">
-
-          </el-table-column>
-
-          </el-table-column>
-
-          <el-table-column label="操作" width="180" align="center">
-            <template slot-scope="scope">
-
-              <el-button
-                      type="text"
-                      @click="handleUpdate(scope.$index, scope.row)"
-                      icon="el-icon-edit-outline"
-              >回访
-              </el-button>
+          <el-table-column label="描述" prop="describe">
 
 
-            </template>
           </el-table-column>
         </el-table>
         <el-pagination
@@ -214,7 +192,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
             return '';
           },
           getAll() {
-            axios.get('${path}/adopt/allAgreeAdopt', {
+            axios.get('${path}/visit/allVisit', {
               params: this.query
             }).then(res => {
               console.log(res)

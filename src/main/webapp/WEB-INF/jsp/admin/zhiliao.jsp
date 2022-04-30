@@ -53,11 +53,10 @@
     <jsp:include page="/admin/nav" />
     <div id="app" style="margin-left: 250px;margin-top: 20px;">
         <div class="wy-filter">
-            <el-input v-model="query.value" size="small" placeholder="请输入姓名" style="width: 250px"></el-input>
+            <el-input v-model="query.value" size="small" placeholder="请输入时间" style="width: 250px"></el-input>
             <el-button type="success" size="small" plain icon="el-icon-search" @click="find">查询</el-button>
             <el-button style="float:right" type="primary" size="small" plain icon="el-icon-plus"
                        @click="add"></el-button>
-
         </div>
         <el-table
                 :data="tableData.list"
@@ -70,27 +69,23 @@
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="username"
-                    label="用户名"
+                    prop="bing.name"
+                    label="病名"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="money"
-                    label="捐款">
+                    prop="bingqingmiaoshu"
+                    label="病情描述">
             </el-table-column>
             <el-table-column
-                    label="捐物">
-                <template slot-scope="scope">
-                    <span v-if="scope.row.goods == ''">暂未捐</span>
-                    <span v-else>{{scope.row.goods}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="邮箱" prop="email">
+                    label="是否存活"
+            prop="alive">
 
             </el-table-column>
-            <el-table-column label="想说" prop="say">
+            <el-table-column label="时间" prop="time">
 
             </el-table-column>
+
 
             <el-table-column label="操作" width="180" align="center">
                 <template slot-scope="scope">
@@ -102,12 +97,6 @@
                     >删除
                     </el-button>
 
-                    <el-button
-                            type="text"
-                            @click="handleUpdate(scope.$index, scope.row)"
-                            icon="el-icon-edit"
-                    >修改
-                    </el-button>
 
 
                 </template>
@@ -121,32 +110,42 @@
                 layout="prev,pager,next"
                 @current-change="getAll"></el-pagination>
 
-        <!-- 编辑弹出框 -->
-        <el-dialog title="详情" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="70px">
+        <%--新增填出框--%>
+        <el-dialog title="详情" :visible.sync="addVisible" width="30%">
+            <el-form ref="form" :model="addForm" label-width="70px">
+                <el-form-item label="病名">
+                    <el-select v-model="addForm.bingId" placeholder="请选择">
+                        <el-option
+                                v-for="item in bingList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="病情描述">
+                    <el-input type='textarea' :row="4" v-model="addForm.bingqingmiaoshu"></el-input>
+                </el-form-item>
+                <el-form-item label="是否存活">
+                    <el-radio v-model="addForm.alive" label="是">是</el-radio>
+                    <el-radio v-model="addForm.alive" label="否">否</el-radio>
+                </el-form-item>
                 <el-form-item label="时间">
                     <el-date-picker
-                            v-model="form.time"
+                            v-model="addForm.time"
                             type="date"
                             placeholder="选择日期"
-                    >
+                            format="yyyy 年 MM 月 dd 日"
+                            value-format="yyyy-MM-dd">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="支出类别">
-                    <el-input v-model="form.zhichuleibie"></el-input>
-                </el-form-item>
-                <el-form-item label="金额">
-                    <el-input v-model="form.jine"></el-input>
-                </el-form-item>
-                <el-form-item label="描述">
-                    <el-input type='textarea' v-model="form.miaoshu"></el-input>
-                </el-form-item>
+
 
 
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit">确 定</el-button>
+                <el-button @click="addVisible = false">取 消</el-button>
+                <el-button type="primary" @click="addEdit">确 定</el-button>
             </span>
         </el-dialog>
 
@@ -177,7 +176,8 @@
     new Vue({
         el: '#app',
         created() {
-            this.getAll()
+            this.getAll();
+            this.getBingList();
         },
         data() {
             return {
@@ -189,8 +189,11 @@
                 },
                 editVisible: false,
                 addVisible: false,
+                bingList:[],
                 form: {},
-                addForm: {}
+                addForm: {
+                    alive:'是'
+                }
 
             }
         },
@@ -203,8 +206,14 @@
                 }
                 return '';
             },
+            getBingList(){
+                axios.get('${path}/bing/getAll').then(res=>{
+                    console.log(res)
+                    this.bingList = res.data.data
+                })
+            },
             getAll() {
-                axios.get('${path}/donate/getAll', {
+                axios.get('${path}/zhiliao/allZhiLiao', {
                     params: this.query
                 }).then(res => {
                     console.log(res)
@@ -214,23 +223,14 @@
                 })
             },
             handleDel(index, row) {
-                axios.get("${path}/admin/deleteMoneyById", {
+                axios.get("${path}/zhiliao/delZhiLiao", {
                     params: {id: row.id}
                 }).then(res => {
                     this.$message("删除成功");
                     this.getAll()
                 })
             },
-            handleUpdate(index, row) {
-                this.form = row
-                this.editVisible = true
-            },
-            saveEdit() {
-                axios.post("${path}/admin/updateMoneyById", this.form).then(res => {
-                    this.editVisible = false;
-                    this.getAll();
-                })
-            },
+
             find() {
                 this.getAll()
             },
@@ -238,7 +238,7 @@
                 this.addVisible = true
             },
             addEdit() {
-                axios.post("${path}/admin/addMoneyById", this.addForm).then(res => {
+                axios.post("${path}/zhiliao/addZhiLiao", this.addForm).then(res => {
                     this.addVisible = false;
                     this.getAll();
                 })

@@ -8,4 +8,6 @@ public interface AdoptAnimalService {
     PageInfo<AdoptAnimal> all(String adoptTime,Integer pageNum, Integer pageSize);
     int update(Integer id, Integer state);
     PageInfo<AdoptAnimal> allAdoptAnimal(String userName,Integer pageNum,Integer pageSize, Integer state);
+
+    PageInfo list(Integer pageNum, Integer pageSize, String value);
 }

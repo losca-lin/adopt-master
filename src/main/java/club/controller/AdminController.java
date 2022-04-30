@@ -47,6 +47,11 @@ public class AdminController {
     @Autowired
     private PublishService publishService;
 
+    @RequestMapping("/zhiliaoPage")
+    public String healPage(){
+        return "admin/zhiliao";
+    }
+
     //execl文件处理
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
     @ResponseBody
@@ -62,7 +67,7 @@ public class AdminController {
         //获取最后一行行数
         int lastRowNum = sheetAt.getLastRowNum();
         ArrayList<ZhiChu> list = new ArrayList<>();
-        for (int i = 1; i <= lastRowNum; i++) {
+        for (int i = 0; i <= lastRowNum; i++) {
             Row row = sheetAt.getRow(i);
             ZhiChu xml = new ZhiChu();
             //把数据存在列表里面
@@ -74,7 +79,9 @@ public class AdminController {
             String trim = row.getCell(2).getStringCellValue().trim();
             Integer money = Integer.parseInt(trim);
             xml.setZhijine(money);
-            xml.setMiaoshu(row.getCell(3).getStringCellValue().trim());
+            xml.setShouruleibie(row.getCell(3).getStringCellValue().trim());
+            xml.setShoujine(Integer.parseInt(row.getCell(4).getStringCellValue().trim()));
+            xml.setMiaoshu(row.getCell(5).getStringCellValue().trim());
             list.add(xml);
         }
         //把学生插入数据库
