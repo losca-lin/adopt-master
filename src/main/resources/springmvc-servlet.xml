@@ -50,6 +50,7 @@
     <!--访问静态资源-->
     <mvc:resources mapping="/static/**" location="/static/"/>
 
+
     <!--处理器映射器-->
     <!--<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"></bean>-->
 
