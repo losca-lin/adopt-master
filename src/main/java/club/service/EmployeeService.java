@@ -1,13 +1,8 @@
 package club.service;
 
 import club.pojo.Employee;
-import club.pojo.Employee;
-import club.pojo.ZhiLiao;
-import club.pojo.ZhiLiaoTable;
 import com.baomidou.mybatisplus.service.IService;
 import com.github.pagehelper.PageInfo;
-
-import java.util.List;
 
 /**
  * @author Losca
@@ -22,4 +17,6 @@ public interface EmployeeService extends IService<Employee> {
     int add(Employee Employee);
     int update(Employee Employee);
     int del(Integer id);
+
+    PageInfo list(Integer pageNum, Integer pageSize, String value);
 }

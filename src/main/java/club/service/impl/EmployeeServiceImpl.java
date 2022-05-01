@@ -3,6 +3,7 @@ package club.service.impl;
 import club.dao.EmployeeMapper;
 import club.pojo.Employee;
 import club.service.EmployeeService;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -63,6 +64,19 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Override
     public Employee findById(Integer id) {
         return employeeMapper.selectById(id);
+    }
+
+    @Override
+    public PageInfo list(Integer pageNum, Integer pageSize, String value) {
+        PageHelper.startPage(pageNum,pageSize);
+        EntityWrapper wrapper = new EntityWrapper();
+        if(StrUtil.isNotBlank(value)){
+            wrapper.like("username",value);
+        }
+
+        List list = employeeMapper.selectList(wrapper);
+        PageInfo<Employee> pageInfo = new PageInfo<>(list);
+        return pageInfo;
     }
 
     @Override

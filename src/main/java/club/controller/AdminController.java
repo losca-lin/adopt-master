@@ -1,9 +1,6 @@
 package club.controller;
 
-import club.pojo.Admins;
-import club.pojo.Bing;
-import club.pojo.Publish;
-import club.pojo.ZhiChu;
+import club.pojo.*;
 import club.service.*;
 import club.util.Message;
 import club.vo.EchartsVO;
@@ -52,6 +49,31 @@ public class AdminController {
     @RequestMapping("/employeePage")
     public String employeePage(){
         return "admin/employee";
+    }
+    @RequestMapping("/allEmployee")
+    @ResponseBody
+    public ResponseVO allEmployee(@RequestParam(defaultValue = "1") Integer pageNum
+            , @RequestParam(defaultValue = "8") Integer pageSize
+            , @RequestParam String value) {
+        return ResponseVO.success(employeeService.list(pageNum, pageSize, value));
+    }
+
+    @RequestMapping(value = "/updateEmployee",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseVO updateEmployee(Employee employee) {
+        return ResponseVO.success(employeeService.updateById(employee));
+    }
+
+    @RequestMapping(value = "/delEmployee")
+    @ResponseBody
+    public ResponseVO updateEmployee(Integer id) {
+        return ResponseVO.success(employeeService.deleteById(id));
+    }
+
+    @RequestMapping(value = "/addEmployee",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseVO addEmployee(Employee employee) {
+        return ResponseVO.success(employeeService.insert(employee));
     }
     @RequestMapping("/visitPage")
     public String visitPage(){

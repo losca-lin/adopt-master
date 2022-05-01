@@ -77,6 +77,11 @@
           </a>
         </li>
         <li class="list-group-item my_font">
+          <a href="${path}/admin/employeePage">
+            <i class="fa fa-flash fa-fw"></i> 员工信息
+          </a>
+        </li>
+        <li class="list-group-item my_font">
           <a href="${path}/admin/moneyPage">
             <i class="fa fa-sitemap fa-fw"></i> 收支管理
           </a>
