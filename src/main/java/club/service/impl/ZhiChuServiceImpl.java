@@ -47,6 +47,9 @@ public class ZhiChuServiceImpl extends ServiceImpl<ZhiChuMapper, ZhiChu> impleme
             wrapper.like("time",format);
         }
         ZhiChu zhiChu = this.selectOne(wrapper);
+        if(zhiChu == null){
+            return 0;
+        }
         return zhiChu.getShoujine() - zhiChu.getZhijine();
 
     }
